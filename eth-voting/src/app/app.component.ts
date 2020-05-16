@@ -24,7 +24,7 @@ export class AppComponent {
   //   const votingId = this.votingSearchForm.value.votingId;
   //   this.votingService.getAccount().then(a => console.log('Account: ', a));
   //
-  //   this.votingService.getOptions(votingId)
+  //   this.votingService.getVoting(votingId)
   //     .then(options => {
   //       console.log('Voting options: ', options);
   //       this.options = options;

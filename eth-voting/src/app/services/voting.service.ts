@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {AbstractControl} from '@angular/forms';
 
 const Web3 = require('web3');
 declare let require: any;
@@ -67,15 +68,15 @@ export class VotingService {
     return Promise.resolve(this.account);
   }
 
-  public async getOptions(votingName: string): Promise<string[]> {
+  public async getVoting(votingName: string): Promise<string[]> {
     const that = this;
     return new Promise((resolve, reject) => {
-      console.log('voting.service :: getOptions:: tokenAbi');
+      console.log('voting.service :: getVoting:: tokenAbi');
       console.log(tokenAbi);
       const contract = require('@truffle/contract');
       const votingContract = contract(tokenAbi);
       votingContract.setProvider(that.web3);
-      console.log('voting.service :: getOptions :: votingContract');
+      console.log('voting.service :: getVoting :: votingContract');
       console.log(votingContract);
       votingContract.deployed().then(instance => instance.getVoting(votingName)
         .then(options => {
@@ -86,6 +87,25 @@ export class VotingService {
           return reject('voting.service error');
         }));
     });
+  }
+
+  public async createVoting(votingName: string, question: string, options: string[], addresses: string[]): Promise<any> {
+    const account = await this.getAccount();
+    const that = this;
+    return new Promise((resolve, reject) => {
+      const contract = require('@truffle/contract');
+      const votingContract = contract(tokenAbi);
+      votingContract.setProvider(that.web3);
+      votingContract.deployed().then(instance => instance.createVoting(votingName, question, options, addresses, {from: account})
+        .then(success => {
+          return resolve(true);
+        })
+        .catch(error => {
+          console.log(error);
+          return reject(error);
+        }));
+    });
+
   }
 
 }

@@ -1,1 +1,47 @@
-<p>create-voting works!</p>
+<form [formGroup]="votingForm" (submit)="createVoting($event)">
+  <div class="form-group">
+    <label for="votingName">Voting name</label>
+    <input type="text" class="form-control" id="votingName" aria-describedby="votingNameHelp"
+           formControlName="votingName">
+    <small id="votingNameHelp" class="form-text text-muted">Name of voting you are willing to create.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="question">Question</label>
+    <input type="text" class="form-control" id="question" aria-describedby="questionHelp"
+           formControlName="question">
+    <small id="questionHelp" class="form-text text-muted">What question do you want to ask?</small>
+  </div>
+
+  <label for="options">Options</label>
+  <ng-container id="options" formArrayName="options">
+    <div *ngFor="let o of options.controls; let i=index">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{i+1}}</span>
+        </div>
+        <input type="text" class="form-control" [formControlName]="i">
+      </div>
+    </div>
+  </ng-container>
+  <button type="button" class="btn btn-success" (click)="addOption()">Add</button>
+
+  <div class="row"></div>
+  <label id="addressesLabel" for="addresses">Addresses</label>
+  <ng-container id="addresses" formArrayName="addresses">
+    <div *ngFor="let a of addresses.controls; let i=index">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{i+1}}</span>
+        </div>
+        <input type="text" class="form-control" [formControlName]="i">
+      </div>
+    </div>
+  </ng-container>
+  <button type="button" class="btn btn-success" (click)="addAddress()">Add</button>
+
+
+  <div class="row">
+  </div>
+  <button id="createBtn" type="submit" class="btn btn-success">Create!</button>
+</form>
