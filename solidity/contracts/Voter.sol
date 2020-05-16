@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 contract Voter {
 
@@ -7,46 +8,85 @@ contract Voter {
         bool exists;
     }
 
-    uint[] public votes;
-    mapping (address => bool) hasVoted;
-    mapping (string => OptionPos) posOfOption;
-    string[] public options;
-    bool votingStarted;
-
-    function addOption(string memory option) public {
-        require(!votingStarted, "Voting has already started");
-        options.push(option);
+    struct VoterInfo {
+        bool allowed;
+        bool voted;
     }
 
-    function startVoting() public {
-        require(!votingStarted, "Voting has already started");
-        votes.length = options.length;
+    struct Voting {
+        bool exists;
+        bool started;
+        bool ended;
+        address owner;
+        uint[] votes;
+        string[] options;
+        mapping(address => VoterInfo) voterInfos;
+        mapping(string => OptionPos) optionsPos;
+    }
 
+    mapping(string => Voting) votings;
+
+
+    function createVoting(string memory votingName, string[] memory options, address[] memory voters) public {
+        bool alreadyExists = votings[votingName].exists;
+        require(!alreadyExists, "Voting of this name already exists");
+
+        Voting memory v;
+        votings[votingName] = v;
+
+        Voting storage voting = votings[votingName];
+
+        voting.exists = true;
+        voting.options = options;
+        for (uint i = 0; i < voters.length; i++) {
+            VoterInfo memory voterInfo = VoterInfo(true, false);
+            voting.voterInfos[voters[i]] = voterInfo;
+        }
         for (uint i = 0; i < options.length; i++) {
             OptionPos memory option = OptionPos(i, true);
-            posOfOption[options[i]] = option;
+            voting.optionsPos[options[i]] = option;
         }
-        votingStarted = true;
+        voting.owner = msg.sender;
     }
 
-    function vote(uint option) public {
-        require(0 <= option && option < options.length, "Invalid option");
-        require(!hasVoted[msg.sender], "Account has already voted");
 
-        hasVoted[msg.sender] = true;
-        votes[option] = votes[option] + 1;
+    function startVoting(string memory votingName) public {
+        Voting storage voting = votings[votingName];
+        require(voting.owner == msg.sender, "Only the voting owner can start the voting");
+        require(!voting.started, "Voting has already started");
+        voting.started = true;
     }
 
-    function vote(string memory option) public {
-        require(!hasVoted[msg.sender], "Account has already voted");
-        OptionPos memory optionPos = posOfOption[option];
+    function vote(string memory votingName, string memory option) public {
+        Voting storage voting = votings[votingName];
+        require(voting.exists, "Voting does not exist");
+        require(voting.started, "Voting has not started yet");
+        require(!voting.ended, "Voting has already ended");
+        require(voting.voterInfos[msg.sender].allowed, "Caller not allowed to vote");
+        require(voting.voterInfos[msg.sender].voted, "Caller has already voted");
+
+        OptionPos memory optionPos = voting.optionsPos[option];
         require(optionPos.exists, "Option does not exist");
-
-        hasVoted[msg.sender] = true;
-        votes[optionPos.pos] = votes[optionPos.pos] + 1;
+        voting.votes[optionPos.pos] = voting.votes[optionPos.pos] + 1;
+        voting.voterInfos[msg.sender].voted = true;
     }
 
-    function getVotes() public view returns (uint[] memory) {
-        return votes;
+    function endVoting(string memory votingName) public {
+        Voting storage voting = votings[votingName];
+        require(voting.exists, "Voting does not exist");
+        require(!voting.ended, "Voting has already ended");
+        require(voting.owner == msg.sender, "Only the voting owner can end the voting");
+        voting.ended = true;
     }
+
+    function getVotes(string memory votingName) public view returns (uint[] memory) {
+        require(votings[votingName].exists, "Voting does not exist");
+        return votings[votingName].votes;
+    }
+
+    function getOptions(string memory votingName) public view returns (string[] memory){
+        require(votings[votingName].exists, "Voting does not exist");
+        return votings[votingName].options;
+    }
+
 }

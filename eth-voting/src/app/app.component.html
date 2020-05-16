@@ -1,15 +1,19 @@
 <div class="container">
-  <form [formGroup]="votingSearchForm" (ngSubmit)="searchForVoting($event)">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control"
-             placeholder="Voting's id"
-             aria-label="Voting's id"
-             aria-describedby="button-addon2"
-             formControlName="votingId">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search
-        </button>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">ETH-VOTING</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" routerLink="/" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" routerLink="/vote" routerLinkActive="active">Vote</a>
+        <a class="nav-item nav-link" routerLink="/create" routerLinkActive="active">Create new voting</a>
       </div>
     </div>
-  </form>
+  </nav>
+
+  <router-outlet></router-outlet>
 </div>

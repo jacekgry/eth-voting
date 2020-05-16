@@ -1,0 +1,28 @@
+<form [formGroup]="votingSearchForm" (ngSubmit)="searchForVoting($event)">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control"
+           placeholder="Voting's id"
+           aria-label="Voting's id"
+           aria-describedby="button-addon2"
+           formControlName="votingId">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search
+      </button>
+    </div>
+  </div>
+</form>
+
+<form *ngIf="options.length > 0">
+  <div *ngFor="let option of options; index as i" class="form-check">
+    <input class="form-check-input" type="radio" name="optionsRadios" id={{option}} value={{option}}
+           [class.checked]="i === 0">
+    <label class="form-check-label" for={{option}}>
+      {{option }}
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary">Vote!</button>
+</form>
+
+<div *ngIf="searchSubmitted && options.length === 0" class="alert alert-danger" role="alert">
+  <strong>Oh snap!</strong> No active voting for provided ID.
+</div>
