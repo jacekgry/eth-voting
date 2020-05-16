@@ -12,6 +12,7 @@ export class VoteComponent {
   options = [];
   votingId: string;
   searchSubmitted = false;
+  question: string;
 
   votingSearchForm = this.fb.group({
     votingId: ['']
@@ -28,15 +29,16 @@ export class VoteComponent {
     this.votingService.getOptions(votingId)
       .then(options => {
         console.log('Voting options: ', options);
-        this.options = options;
+        this.question = options[0];
+        this.options = options.slice(1);
         this.votingId = votingId;
         this.searchSubmitted = true;
       })
       .catch(error => {
         this.votingId = null;
         this.options = [];
-        this.votingSearchForm.reset();
         this.searchSubmitted = true;
+        this.question = null;
       });
   }
 

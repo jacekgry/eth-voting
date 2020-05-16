@@ -77,7 +77,7 @@ export class VotingService {
       votingContract.setProvider(that.web3);
       console.log('voting.service :: getOptions :: votingContract');
       console.log(votingContract);
-      votingContract.deployed().then(instance => instance.getOptions(votingName)
+      votingContract.deployed().then(instance => instance.getVoting(votingName)
         .then(options => {
           return resolve(options);
         })
@@ -87,57 +87,5 @@ export class VotingService {
         }));
     });
   }
-
-  public async getUserBalance(): Promise<any> {
-    const account = await this.getAccount();
-    console.log('voting.service :: getUserBalance :: account');
-    console.log(account);
-    return new Promise((resolve, reject) => {
-      window.web3.eth.getBalance(account, (err, balance) => {
-        console.log('voting.service :: getUserBalance :: getBalance');
-        console.log(balance);
-        if (!err) {
-          const retVal = {
-            account,
-            balance
-          };
-          console.log('voting.service :: getUserBalance :: getBalance :: retVal');
-          console.log(retVal);
-          resolve(retVal);
-        } else {
-          reject({account: 'error', balance: 0});
-        }
-      });
-    }) as Promise<any>;
-  }
-
-  public transferEther(value) {
-    const that = this;
-    console.log('voting.service :: transferEther to: ' +
-      value.transferAddress + ', from: ' + that.account + ', amount: ' + value.amount);
-    return new Promise((resolve, reject) => {
-      console.log('voting.service :: transferEther :: tokenAbi');
-      console.log(tokenAbi);
-      const contract = require('@truffle/contract');
-      const transferContract = contract(tokenAbi);
-      transferContract.setProvider(that.web3);
-      console.log('voting.service :: transferEther :: transferContract');
-      console.log(transferContract);
-      transferContract.deployed().then(instance => instance.pay(
-        value.transferAddress,
-        {
-          from: that.account,
-          value: value.amount
-        })).then(status => {
-        if (status) {
-          return resolve({status: true});
-        }
-      }).catch(error => {
-        console.log(error);
-        return reject('voting.service error');
-      });
-    });
-  }
-
 
 }

@@ -13,6 +13,7 @@
 </form>
 
 <form *ngIf="options.length > 0">
+  <h2>{{question}}</h2>
   <div *ngFor="let option of options; index as i" class="form-check">
     <input class="form-check-input" type="radio" name="optionsRadios" id={{option}} value={{option}}
            [class.checked]="i === 0">

@@ -17,6 +17,7 @@ contract Voter {
         bool exists;
         bool started;
         bool ended;
+        string question;
         address owner;
         uint[] votes;
         string[] options;
@@ -27,7 +28,7 @@ contract Voter {
     mapping(string => Voting) votings;
 
 
-    function createVoting(string memory votingName, string[] memory options, address[] memory voters) public {
+    function createVoting(string memory votingName, string memory question, string[] memory options, address[] memory voters) public {
         bool alreadyExists = votings[votingName].exists;
         require(!alreadyExists, "Voting of this name already exists");
 
@@ -38,6 +39,7 @@ contract Voter {
 
         voting.exists = true;
         voting.options = options;
+        voting.question = question;
         for (uint i = 0; i < voters.length; i++) {
             VoterInfo memory voterInfo = VoterInfo(true, false);
             voting.voterInfos[voters[i]] = voterInfo;
@@ -84,9 +86,15 @@ contract Voter {
         return votings[votingName].votes;
     }
 
-    function getOptions(string memory votingName) public view returns (string[] memory){
+    function getVoting(string memory votingName) public view returns (string[] memory){
         require(votings[votingName].exists, "Voting does not exist");
-        return votings[votingName].options;
+        Voting memory voting = votings[votingName];
+        string[] memory resultArray = new string[](voting.options.length + 1);
+        resultArray[0] = voting.question;
+        for (uint i = 1; i < voting.options.length + 1; i++) {
+            resultArray[i] = voting.options[i - 1];
+        }
+        return resultArray;
     }
 
 }
