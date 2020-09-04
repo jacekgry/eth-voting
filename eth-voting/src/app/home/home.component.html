@@ -1,1 +1,43 @@
-<p>home works!</p>
+<form [formGroup]="votingStartForm" (ngSubmit)="startVoting($event)">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control"
+             placeholder="Voting's id"
+             aria-label="Voting's id"
+             aria-describedby="button-addon2"
+             formControlName="votingId">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Start Voting
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="votingEndForm" (ngSubmit)="endVoting($event)">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control"
+             placeholder="Voting's id"
+             aria-label="Voting's id"
+             aria-describedby="button-addon2"
+             formControlName="votingId">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">End Voting
+        </button>
+      </div>
+    </div>
+  </form>
+  
+
+  <form [formGroup]="votingEndForm" (ngSubmit)="getVotingResult($event)">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control"
+             placeholder="Voting's id"
+             aria-label="Voting's id"
+             aria-describedby="button-addon2"
+             formControlName="votingId">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Show Voting Result
+        </button>
+      </div>
+    </div>
+  </form>
+  
