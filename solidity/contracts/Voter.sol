@@ -48,6 +48,7 @@ contract Voter {
             OptionPos memory option = OptionPos(i, true);
             voting.optionsPos[options[i]] = option;
         }
+        voting.votes = new uint[](options.length);
         voting.owner = msg.sender;
     }
 
@@ -65,7 +66,7 @@ contract Voter {
         require(voting.started, "Voting has not started yet");
         require(!voting.ended, "Voting has already ended");
         require(voting.voterInfos[msg.sender].allowed, "Caller not allowed to vote");
-        require(voting.voterInfos[msg.sender].voted, "Caller has already voted");
+        require(!voting.voterInfos[msg.sender].voted, "Caller has already voted");
 
         OptionPos memory optionPos = voting.optionsPos[option];
         require(optionPos.exists, "Option does not exist");

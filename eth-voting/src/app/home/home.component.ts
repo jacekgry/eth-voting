@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { VotingService } from '../services/voting.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {VotingService} from '../services/voting.service';
 
 @Component({
   selector: 'app-home',
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   }
 
   endVoting(event) {
-    const votingId = this.votingStartForm.value.votingId;
+    const votingId = this.votingEndForm.value.votingId;
     this.votingService.getAccount().then(a => console.log('Account: ', a));
 
     this.votingService.endVoting(votingId)
@@ -58,7 +58,8 @@ export class HomeComponent implements OnInit {
 
   getVotingResult(event) {
 
-   const votingId = this.votingStartForm.value.votingId;
+    const votingId = this.votingResultForm.value.votingId;
+    console.log('voting id: ', votingId);
     this.votingService.getAccount().then(a => console.log('Account: ', a));
 
     this.votingService.getVotes(votingId)
@@ -69,7 +70,6 @@ export class HomeComponent implements OnInit {
         console.log('Result: ', error);
       });
   }
-
 
 
 }

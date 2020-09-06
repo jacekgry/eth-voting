@@ -115,7 +115,7 @@ export class VotingService {
       const contract = require('@truffle/contract');
       const votingContract = contract(tokenAbi);
       votingContract.setProvider(that.web3);
-      votingContract.deployed().then(instance => instance.endVoting(votingName)
+      votingContract.deployed().then(instance => instance.endVoting(votingName, {from: account})
         .then(success => {
           return resolve(true);
         })
@@ -126,22 +126,22 @@ export class VotingService {
     });
   }
 
-    public async startVoting(votingName: string): Promise<any> {
-      const account = await this.getAccount();
-      const that = this;
-      return new Promise((resolve, reject) => {
-        const contract = require('@truffle/contract');
-        const votingContract = contract(tokenAbi);
-        votingContract.setProvider(that.web3);
-        votingContract.deployed().then(instance => instance.startVoting(votingName)
-          .then(success => {
-            return resolve(true);
-          })
-          .catch(error => {
-            console.log(error);
-            return reject(error);
-          }));
-      });
+  public async startVoting(votingName: string): Promise<any> {
+    const account = await this.getAccount();
+    const that = this;
+    return new Promise((resolve, reject) => {
+      const contract = require('@truffle/contract');
+      const votingContract = contract(tokenAbi);
+      votingContract.setProvider(that.web3);
+      votingContract.deployed().then(instance => instance.startVoting(votingName, {from: account})
+        .then(success => {
+          return resolve(true);
+        })
+        .catch(error => {
+          console.log(error);
+          return reject(error);
+        }));
+    });
   }
 
   public async vote(votingName: string, option: string): Promise<any> {
@@ -151,33 +151,35 @@ export class VotingService {
       const contract = require('@truffle/contract');
       const votingContract = contract(tokenAbi);
       votingContract.setProvider(that.web3);
-      votingContract.deployed().then(instance => instance.vote(votingName, option)
+      votingContract.deployed().then(instance => instance.vote(votingName, option, {from: account})
         .then(success => {
           return resolve(true);
         })
         .catch(error => {
-          console.log(error);
+          console.log('vote error: ');
+          console.log(error.toString());
           return reject(error);
         }));
     });
-}
+  }
 
-public async getVotes(votingName: string): Promise<any> {
-  const account = await this.getAccount();
-  const that = this;
-  return new Promise((resolve, reject) => {
-    const contract = require('@truffle/contract');
-    const votingContract = contract(tokenAbi);
-    votingContract.setProvider(that.web3);
-    votingContract.deployed().then(instance => instance.getVotes(votingName)
-      .then(success => {
-        return resolve(true);
-      })
-      .catch(error => {
-        console.log(error);
-        return reject(error);
-      }));
-  });
-}
+  public async getVotes(votingName: string): Promise<any> {
+    const account = await this.getAccount();
+    const that = this;
+    return new Promise((resolve, reject) => {
+      const contract = require('@truffle/contract');
+      const votingContract = contract(tokenAbi);
+      votingContract.setProvider(that.web3);
+      votingContract.deployed().then(instance => instance.getVotes(votingName)
+        .then(votes => {
+          console.log(votes);
+          return resolve(true);
+        })
+        .catch(error => {
+          console.log(error.toString());
+          return reject(error);
+        }));
+    });
+  }
 
 }
