@@ -9,12 +9,12 @@ import {VotingService} from '../services/voting.service';
 })
 export class HomeComponent implements OnInit {
 
-  options = ["1sfaaaaaaasfasfasfasfasfascascasdasf", "2", "3"];
-  votes = ["0", "1", "0"];
-  percentage = [0, 100, 0]
-  numberOfVotes = 0;
-  numberOfAllVoters = 10;
-  isEnded = false;
+  options;
+  votes;
+  percentage;
+  numberOfVotes;
+  numberOfAllVoters;
+  isEnded;
 
   votingStartForm = this.fb.group({
     votingId: ['']
@@ -91,6 +91,7 @@ export class HomeComponent implements OnInit {
         console.log('Result: ', error);
       });
   }
+
 
 
 }

@@ -173,7 +173,7 @@ export class VotingService {
       votingContract.deployed().then(instance => instance.getVotes(votingName)
         .then(votes => {
           console.log(votes);
-          return resolve(true);
+          return resolve(votes);
         })
         .catch(error => {
           console.log(error.toString());
