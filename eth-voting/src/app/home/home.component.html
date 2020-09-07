@@ -27,7 +27,7 @@
   </form>
   
 
-  <form [formGroup]="votingResultForm" (ngSubmit)="getVotingResult($event)">
+  <form [formGroup]="votingEndForm" (ngSubmit)="getVotingResult($event)">
     <div class="input-group mb-3">
       <input type="text" class="form-control"
              placeholder="Voting's id"
@@ -40,3 +40,37 @@
       </div>
     </div>
   </form>
+
+
+<div *ngIf= "options.length > 0 && votes.length > 0 && percentage.length == votes.length">
+    <h3>
+        Voting Result
+    </h3>
+    <hr>
+    <h6>
+        Total votes: {{numberOfVotes}} / {{numberOfAllVoters}}
+    </h6>
+      <table id="result">
+        <tr>
+            <th>
+                Option
+            </th>
+            <th>
+                Number of votes
+            </th>
+            <th>
+                Percentage
+            </th>
+        </tr>
+        <tr *ngFor="let option of options; let i=index">
+            <td>{{ option }}</td>
+            <td>{{ votes[i] }}</td>
+            <td>{{ percentage[i]}} %</td>
+        </tr>
+      </table>
+      <h6 *ngIf="isEnded">
+        The voting period has ended.
+      </h6>
+</div>
+
+

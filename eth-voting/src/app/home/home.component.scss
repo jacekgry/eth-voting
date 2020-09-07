@@ -1,0 +1,32 @@
+h3 {
+    text-align: center;
+}
+
+h6 {
+    text-align: center;
+}
+
+#result {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: auto;
+}
+
+#result td, #result th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#result tr:nth-child(even) { background-color: #f2f2f2;}
+
+#result tr:hover { background-color: #ddd;}
+
+#result th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #2f4f4f;
+    color: white;
+}
