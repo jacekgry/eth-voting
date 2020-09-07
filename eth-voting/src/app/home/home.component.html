@@ -1,76 +1,86 @@
 <form [formGroup]="votingStartForm" (ngSubmit)="startVoting($event)">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control"
-             placeholder="Voting's id"
-             aria-label="Voting's id"
-             aria-describedby="button-addon2"
-             formControlName="votingId">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Start Voting
-        </button>
-      </div>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control"
+           placeholder="Voting's id"
+           aria-label="Voting's id"
+           aria-describedby="button-addon2"
+           formControlName="votingId">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Start Voting
+      </button>
     </div>
-  </form>
+  </div>
+</form>
 
-  <form [formGroup]="votingEndForm" (ngSubmit)="endVoting($event)">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control"
-             placeholder="Voting's id"
-             aria-label="Voting's id"
-             aria-describedby="button-addon2"
-             formControlName="votingId">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">End Voting
-        </button>
-      </div>
+<form [formGroup]="votingEndForm" (ngSubmit)="endVoting($event)">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control"
+           placeholder="Voting's id"
+           aria-label="Voting's id"
+           aria-describedby="button-addon2"
+           formControlName="votingId">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">End Voting
+      </button>
     </div>
-  </form>
-  
+  </div>
+</form>
 
-  <form [formGroup]="votingResultForm" (ngSubmit)="getVotingResult($event)">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control"
-             placeholder="Voting's id"
-             aria-label="Voting's id"
-             aria-describedby="button-addon2"
-             formControlName="votingId">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Show Voting Result
-        </button>
-      </div>
+
+<form [formGroup]="votingResultForm" (ngSubmit)="getVoting($event)">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control"
+           placeholder="Voting's id"
+           aria-label="Voting's id"
+           aria-describedby="button-addon2"
+           formControlName="votingId">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Show Voting Result
+      </button>
     </div>
-  </form>
+  </div>
+</form>
 
 
-<div *ngIf= "options.length > 0 && votes.length > 0 && percentage.length == votes.length">
-    <h3>
-        Voting Result
-    </h3>
-    <hr>
-    <h6>
-        Total votes: {{numberOfVotes}} / {{numberOfAllVoters}}
-    </h6>
-      <table id="result">
-        <tr>
-            <th>
-                Option
-            </th>
-            <th>
-                Number of votes
-            </th>
-            <th>
-                Percentage
-            </th>
-        </tr>
-        <tr *ngFor="let option of options; let i=index">
-            <td>{{ option }}</td>
-            <td>{{ votes[i] }}</td>
-            <td>{{ percentage[i]}} %</td>
-        </tr>
-      </table>
-      <h6 *ngIf="isEnded">
-        The voting period has ended.
-      </h6>
+<div *ngIf="voting && votingResult">
+  <h3>
+    Voting Result
+  </h3>
+  <h2>
+    {{voting.question}}
+  </h2>
+  <hr>
+  <h6>
+    Total votes: {{numberOfVotes}} / {{votingResult.allVotersNo}}
+  </h6>
+  <table id="result">
+    <tr>
+      <th>
+        Option
+      </th>
+      <th>
+        Number of votes
+      </th>
+      <th>
+        Percentage
+      </th>
+    </tr>
+    <tr *ngFor="let option of voting.options; let i=index">
+      <td>{{ option }}</td>
+      <td>{{ votingResult.votesNo[i] }}</td>
+      <td>{{ percentage[i]}} %</td>
+    </tr>
+  </table>
+  <div *ngIf="!votingResult.started">
+    <h6>The voting has not started yet.</h6>
+  </div>
+  <div *ngIf="votingResult.started && !votingResult.ended">
+    <h6>The voting is still ongoing.</h6>
+  </div>
+  <div *ngIf="votingResult.ended">
+    <h6>The voting period has ended.</h6>
+  </div>
+
 </div>
 
 

@@ -23,6 +23,7 @@ contract Voter {
         string[] options;
         mapping(address => VoterInfo) voterInfos;
         mapping(string => OptionPos) optionsPos;
+        uint votersNo;
     }
 
     mapping(string => Voting) votings;
@@ -50,6 +51,7 @@ contract Voter {
         }
         voting.votes = new uint[](options.length);
         voting.owner = msg.sender;
+        voting.votersNo = voters.length;
     }
 
 
@@ -82,9 +84,17 @@ contract Voter {
         voting.ended = true;
     }
 
-    function getVotes(string memory votingName) public view returns (uint[] memory) {
+    function getVotingResults(string memory votingName) public view returns (uint[] memory) {
         require(votings[votingName].exists, "Voting does not exist");
-        return votings[votingName].votes;
+        Voting memory voting = votings[votingName];
+        uint[] memory resultArray = new uint[](voting.votes.length + 3);
+        resultArray[0] = voting.started ? 1 : 0;
+        resultArray[1] = voting.ended ? 1 : 0;
+        resultArray[2] = voting.votersNo;
+        for (uint i = 3; i < votings[votingName].votes.length + 3; i++) {
+            resultArray[i] = votings[votingName].votes[i - 3];
+        }
+        return resultArray;
     }
 
     function getVoting(string memory votingName) public view returns (string[] memory){
