@@ -23,7 +23,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
