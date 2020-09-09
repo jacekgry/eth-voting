@@ -52,11 +52,7 @@ export class VoteComponent {
           this.toastr.success('Vote submitted successfully', 'Success');
         },
         error => {
-          if(error.stack.toString().includes('3746573')){
-            this.toastr.error('Voting has not started yet.', 'Error');
-          } else{
-            this.toastr.error('Failed to submit the vote.', 'Error');
-          }
+          this.toastr.error('Failed to submit the vote.', 'Error');
         });
   }
 

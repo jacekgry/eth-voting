@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   startVoting(event) {
     const votingId = this.votingStartForm.value.votingId;
     this.votingService.getAccount().then(a => console.log('Account: ', a));
@@ -52,13 +51,9 @@ export class HomeComponent implements OnInit {
       })
       .catch(error => {
         console.log('Start voting: ', error);
-        if(error.stack.toString().includes('3746173')){
-          this.toastr.error('Only the voting owner can start the voting.', 'Error');
-        }else if(error.stack.toString().includes('3746573')){
-          this.toastr.error('Voting has already started.', 'Error');
-        } else{
-          this.toastr.error('Failed to start the voting.', 'Error');
-        }
+
+        this.toastr.error('Failed to start the voting.', 'Error');
+
       });
   }
 
@@ -72,13 +67,7 @@ export class HomeComponent implements OnInit {
       })
       .catch(error => {
         console.log('End voting: ', error);
-        if(error.stack.toString().includes('3746561')){
-          this.toastr.error('Voting does not exist.', 'Error');
-        }else if(error.stack.toString().includes('3746573')){
-          this.toastr.error('Voting has already ended.', 'Error');
-        } else{
-          this.toastr.error('Failed to end the voting.', 'Error');
-        }
+        this.toastr.error('Failed to end the voting.', 'Error');
       });
   }
 
