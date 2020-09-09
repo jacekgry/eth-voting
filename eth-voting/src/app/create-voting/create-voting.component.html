@@ -21,7 +21,7 @@
           <span class="input-group-text">{{i+1}}</span>
         </div>
         <input type="text" class="form-control" [formControlName]="i">
-        <button type="button" *ngIf="showDeleteForOption[i]" (click)="deleteOption(i)">Delete</button>
+        <button type="button" *ngIf="options.length > 1" (click)="deleteOption(i)">Delete</button>
       </div>
 
     </div>
@@ -37,7 +37,7 @@
           <span class="input-group-text">{{i+1}}</span>
         </div>
         <input type="text" class="form-control" [formControlName]="i">
-        <button type="button" *ngIf="showDeleteForAddress[i]" (click)="deleteAdress(i)">Delete</button>
+        <button type="button" *ngIf="addresses.length > 1" (click)="deleteAdress(i)">Delete</button>
       </div>
     </div>
   </ng-container>
